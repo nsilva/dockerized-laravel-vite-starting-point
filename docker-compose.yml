@@ -18,30 +18,30 @@ services:
     ports:
       - 8002:8000
     depends_on:
-      - database
+      - db
     volumes:
       - ./backend:/var/www/html
 
-  database:
+  db:
     image: mysql:8.0
+    env_file: './.env'
     environment:
-      MYSQL_DATABASE: mydatabase
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: mypassword
-      MYSQL_ROOT_PASSWORD: myrootpassword
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_ROOT: "root"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
     volumes:
       - db_data:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
-      PMA_HOST: database
-      PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: myrootpassword
+      PMA_HOST: db
     ports:
       - 8003:80
     depends_on:
-      - database
+      - db
 
 volumes:
   db_data:
