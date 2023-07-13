@@ -43,6 +43,6 @@ RUN chown -R www-data:www-data \
 
 # Set the command to run when the container starts
 #CMD php artisan serve --host=0.0.0.0
-#ENTRYPOINT ./start.sh
+ENTRYPOINT ./start.sh
 # Expose port 8000
 EXPOSE 8000
