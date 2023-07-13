@@ -1,6 +1,7 @@
 version: '3.4'
 services:
   frontend-vue:
+    container_name: frontend
     image: node:lts
     working_dir: /app
     ports:
@@ -12,6 +13,7 @@ services:
       - ./frontend:/app
 
   backend-laravel:
+    container_name: backend
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -27,6 +29,7 @@ services:
     image: redis:latest
 
   queue-worker:
+    container_name: queue
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -50,6 +53,7 @@ services:
       - db_data:/var/lib/mysql
 
   phpmyadmin:
+    container_name: phpmyadmin
     image: phpmyadmin/phpmyadmin
     environment:
       PMA_HOST: db
@@ -57,6 +61,12 @@ services:
       - 8003:80
     depends_on:
       - db
+
+  mailtrap:
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025
 
 volumes:
   db_data:
