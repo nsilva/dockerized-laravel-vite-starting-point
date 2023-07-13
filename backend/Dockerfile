@@ -24,13 +24,14 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN a2enmod rewrite
 
 # Copy only the composer files to a temporary directory
-COPY start.sh ./
+#COPY composer.json ./
 
 # Install project dependencies
 #RUN composer install --optimize-autoloader --no-dev
 
 # Copy the entire project to the working directory
-COPY . .
+COPY ./storage ./storage
+COPY ./bootstrap/cache ./bootstrap/cache
 
 # Set permissions for Laravel directories
 RUN chown -R www-data:www-data \
@@ -41,7 +42,7 @@ RUN chown -R www-data:www-data \
 #RUN php artisan key:generate
 
 # Set the command to run when the container starts
-CMD ["./start.sh"]
-
+#CMD php artisan serve --host=0.0.0.0
+#ENTRYPOINT ./start.sh
 # Expose port 8000
 EXPOSE 8000

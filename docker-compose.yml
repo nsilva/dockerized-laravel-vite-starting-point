@@ -21,8 +21,6 @@ services:
       - database
     volumes:
       - ./backend:/var/www/html
-      - ./backend/storage:/var/www/html/storage
-      - vendor:/var/www/html/vendor
 
   database:
     image: mysql:8.0
@@ -47,4 +45,3 @@ services:
 
 volumes:
   db_data:
-  vendor:
