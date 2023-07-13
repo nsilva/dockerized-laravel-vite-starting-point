@@ -1,0 +1,50 @@
+version: '3.4'
+services:
+  frontend-vue:
+    image: node:lts
+    working_dir: /app
+    ports:
+      - 8001:8000
+    depends_on:
+      - backend-laravel
+    entrypoint: /bin/sh -c "npm install && npm run dev"
+    volumes:
+      - ./frontend:/app
+
+  backend-laravel:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 8002:8000
+    depends_on:
+      - database
+    volumes:
+      - ./backend:/var/www/html
+      - ./backend/storage:/var/www/html/storage
+      - vendor:/var/www/html/vendor
+
+  database:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+      MYSQL_ROOT_PASSWORD: myrootpassword
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: myrootpassword
+    ports:
+      - 8003:80
+    depends_on:
+      - database
+
+volumes:
+  db_data:
+  vendor:
