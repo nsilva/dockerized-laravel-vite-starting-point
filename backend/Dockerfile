@@ -12,10 +12,12 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libzip-dev \
     zip \
-    unzip
+    unzip \
+    libhiredis-dev
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath
+RUN pecl install redis && docker-php-ext-enable redis
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -43,6 +45,6 @@ RUN chown -R www-data:www-data \
 
 # Set the command to run when the container starts
 #CMD php artisan serve --host=0.0.0.0
-ENTRYPOINT ./start.sh
+#ENTRYPOINT ./start.sh
 # Expose port 8000
 EXPOSE 8000

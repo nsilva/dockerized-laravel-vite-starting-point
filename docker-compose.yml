@@ -15,12 +15,27 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    command: ./start.sh --serve
     ports:
       - 8002:8000
     depends_on:
       - db
     volumes:
       - ./backend:/var/www/html
+
+  redis:
+    image: redis:latest
+
+  queue-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./backend:/var/www/html
+    command: ./start.sh --queue
 
   db:
     image: mysql:8.0
