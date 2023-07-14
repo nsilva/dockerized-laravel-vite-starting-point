@@ -18,7 +18,8 @@ class Todo extends Model
         'title',
         'status',
         'parent_id',
-        'in_progress_since'
+        'in_progress_since',
+        'user_id'
     ];
 
     /**

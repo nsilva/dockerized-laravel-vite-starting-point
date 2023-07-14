@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Todo;
+use App\Support\Enums\TodoStatusEnum;
 
 class TodoControllerTest extends TestCase
 {
@@ -35,10 +36,38 @@ class TodoControllerTest extends TestCase
 
         $data = [
             'title' => 'Sample Todo',
-            'description' => 'This is a sample todo.',
         ];
 
-        $response = $this->actingAs($user)->post(route('todos.create'), $data);
+        $response = $this->actingAs($user)->post(route('todos.store'), $data);
+
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('todos', $data + ['user_id' => $user->id]);
+    }
+
+    public function test_can_create_todo_with_parent()
+    {
+        $user = User::factory()->create();
+        $anotherUser = User::factory()->create();
+
+        $todo = Todo::factory()->create(['user_id' => $user->id]);
+        $data = [
+            'title' => 'Sample Todo',
+            'parent_id' => 1000
+        ];
+
+        // Parent does *not* exist
+        $response = $this->actingAs($anotherUser)->post(route('todos.store'), $data);
+        $response->assertStatus(400);
+        $this->assertDatabaseMissing('todos', $data + ['user_id' => $user->id]);
+
+        $data['parent_id'] = $todo->id;
+        // Parent todo does *not* belong to the user
+        $response = $this->actingAs($anotherUser)->post(route('todos.store'), $data);
+        $response->assertStatus(400);
+        $this->assertDatabaseMissing('todos', $data + ['user_id' => $user->id]);
+
+        // Parent todo belongs to the user
+        $response = $this->actingAs($user)->post(route('todos.store'), $data);
 
         $response->assertStatus(201);
         $this->assertDatabaseHas('todos', $data + ['user_id' => $user->id]);
@@ -47,13 +76,19 @@ class TodoControllerTest extends TestCase
     public function test_can_update_todo()
     {
         $user = User::factory()->create();
+        $anotherUser = User::factory()->create();
         $todo = Todo::factory()->create(['user_id' => $user->id]);
 
         $data = [
             'title' => 'Updated Todo',
-            'description' => 'This is an updated todo.',
+            'status' => TodoStatusEnum::IN_PROGRESS->value
         ];
 
+        // Todo does not belong to user
+        $response = $this->actingAs($anotherUser)->put(route('todos.update', $todo->id), $data);
+        $response->assertStatus(404);
+
+        // Todo belongs to user
         $response = $this->actingAs($user)->put(route('todos.update', $todo->id), $data);
 
         $response->assertStatus(200);
@@ -63,10 +98,14 @@ class TodoControllerTest extends TestCase
     public function test_can_delete_todo()
     {
         $user = User::factory()->create();
+        $anotherUser = User::factory()->create();
         $todo = Todo::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->delete(route('todos.destroy', $todo->id));
+        // Todo does not belong to user
+        $response = $this->actingAs($anotherUser)->delete(route('todos.destroy', $todo->id));
+        $response->assertStatus(404);
 
+        $response = $this->actingAs($user)->delete(route('todos.destroy', $todo->id));
         $response->assertStatus(204);
         $this->assertDatabaseMissing('todos', ['id' => $todo->id]);
     }
