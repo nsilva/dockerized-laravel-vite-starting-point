@@ -10,9 +10,9 @@ class TodoControllerTest extends TestCase
     public function test_can_get_all_todos()
     {
         $user = User::factory()->create();
-        $todos = Todo::factory()->count(3)->create(['user_id' => $user->id]);
+        Todo::factory()->count(3)->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->get(route('todo.index'));
+        $response = $this->actingAs($user)->get(route('todos.index'));
 
         $response->assertStatus(200);
         $response->assertJsonCount(3);
@@ -23,7 +23,7 @@ class TodoControllerTest extends TestCase
         $user = User::factory()->create();
         $todo = Todo::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->get(route('todo.show', $todo->id));
+        $response = $this->actingAs($user)->get(route('todos.show', $todo->id));
 
         $response->assertStatus(200);
         $response->assertJson($todo->toArray());
@@ -38,7 +38,7 @@ class TodoControllerTest extends TestCase
             'description' => 'This is a sample todo.',
         ];
 
-        $response = $this->actingAs($user)->post(route('todo.create'), $data);
+        $response = $this->actingAs($user)->post(route('todos.create'), $data);
 
         $response->assertStatus(201);
         $this->assertDatabaseHas('todos', $data + ['user_id' => $user->id]);
@@ -54,7 +54,7 @@ class TodoControllerTest extends TestCase
             'description' => 'This is an updated todo.',
         ];
 
-        $response = $this->actingAs($user)->put(route('todo.update', $todo->id), $data);
+        $response = $this->actingAs($user)->put(route('todos.update', $todo->id), $data);
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('todos', $data + ['user_id' => $user->id]);
@@ -65,7 +65,7 @@ class TodoControllerTest extends TestCase
         $user = User::factory()->create();
         $todo = Todo::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->delete(route('todo.destroy', $todo->id));
+        $response = $this->actingAs($user)->delete(route('todos.destroy', $todo->id));
 
         $response->assertStatus(204);
         $this->assertDatabaseMissing('todos', ['id' => $todo->id]);
