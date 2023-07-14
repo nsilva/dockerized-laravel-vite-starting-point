@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class TodoController extends Controller
@@ -12,7 +13,10 @@ class TodoController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $todos = $user->todos()->get();
+
+        return response()->json($todos);
     }
 
     /**
