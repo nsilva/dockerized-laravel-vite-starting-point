@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\HttpResponse;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\CreateUserRequest;
 
 class UserController extends Controller
 {
-    public function create(Request $request)
+    use HttpResponse;
+
+    public function create(CreateUserRequest $request)
     {
         $request->validate([
             'name' => 'required',
@@ -22,9 +25,11 @@ class UserController extends Controller
             'password' => bcrypt($request->input('password')),
         ]);
 
-        return response()->json([
+        $responseData = [
             'message' => 'User created successfully.',
             'user' => $user,
-        ], 201);
+        ];
+
+        return $this->success($responseData, [], '', 201);
     }
 }

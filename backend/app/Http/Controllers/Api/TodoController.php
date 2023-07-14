@@ -7,18 +7,22 @@ use App\Models\Todo;
 use App\Support\Enums\TodoStatusEnum;
 use App\Http\Requests\CreateTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $user = Auth::user();
-        $todos = $user->todos()->get();
+        $user = $request->user();
+
+        $todos = $user->todos()
+            ->whereNull('parent_id')
+            ->with('subtasks')
+            ->get();
 
         return response()->json($todos);
     }

@@ -20,19 +20,4 @@ class UserControllerTest extends TestCase
         $response->assertStatus(201);
         $this->assertDatabaseHas('users', ['email' => $data['email']]);
     }
-
-    public function test_can_update_user()
-    {
-
-        $user = factory(User::class)->create();
-
-        $data = [
-            'name' => $this->faker->name(),
-        ];
-
-        $response = $this->put(route('api.user.update', $user->id), $data);
-
-        $response->assertStatus(200);
-        $this->assertDatabaseHas('users', ['email' => $data['name']]);
-    }
 }

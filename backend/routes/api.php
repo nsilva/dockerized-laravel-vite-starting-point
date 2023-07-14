@@ -25,4 +25,7 @@ Route::post('/recover-password', [AuthController::class, 'recoverPassword'])->na
 // Create user
 Route::post('/users', [UserController::class, 'create'])->name('api.user.create');
 
-Route::middleware('auth:sanctum')->resource('todos', TodoController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('todos', TodoController::class, ['as' => 'api']);
+});
+
