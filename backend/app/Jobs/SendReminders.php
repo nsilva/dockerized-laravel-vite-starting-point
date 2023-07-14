@@ -25,6 +25,7 @@ class SendReminders implements ShouldQueue
         $subject = 'Test mail';
         $message = 'This is a test';
 
-        Mail::to($recipient)->send(new SendReminderEmail($subject, $message));
+        Mail::to($recipient)
+            ->send(new SendReminderEmail($subject, $message));
     }
 }

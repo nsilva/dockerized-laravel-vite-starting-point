@@ -4,7 +4,10 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
+use Illuminate\Mail\Mailables\Envelope;
 
 class SendReminderEmail extends Mailable
 {
@@ -27,14 +30,27 @@ class SendReminderEmail extends Mailable
     }
 
     /**
-     * Build the message.
+     * Get the message envelope.
      *
-     * @return $this
+     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function build()
+    public function envelope(): Envelope
     {
-        return $this->view('emails.send_reminder')
-            ->subject($this->subject)
-            ->with('message', $this->message);
+        return new Envelope(
+            from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME')),
+            subject: 'Todoist - Reminder',
+        );
+    }
+
+    /**
+     * Get the message content definition.
+     *
+     * @return \Illuminate\Mail\Mailables\Content
+     */
+    public function content(): Content
+    {
+        return new Content(
+            view: 'emails.send_reminder',
+        );
     }
 }
