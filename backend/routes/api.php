@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,8 @@ Route::post('/login', [AuthController::class, 'getAccessToken'])->name('api.auth
 Route::post('/logout', [AuthController::class, 'deleteAccessToken'])->name('api.auth.logout');
 Route::post('/recover-password', [AuthController::class, 'recoverPassword'])->name('api.auth.recover');
 
+// Create user
+Route::post('/users', [UserController::class, 'create'])->name('api.user.create');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

@@ -9,6 +9,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Sanctum\Sanctum;
+use \Faker\Factory;
+use \Faker\Generator;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -16,12 +18,16 @@ abstract class TestCase extends BaseTestCase
     //use RefreshDatabaseState;
     use RefreshDatabase;
 
+    protected Generator $faker;
+
     protected function setUp(): void
     {
         RefreshDatabaseState::$migrated = false;
         parent::setUp();
 
         Artisan::call('migrate');
+
+        $this->faker = Factory::create();
     }
 
     /**
