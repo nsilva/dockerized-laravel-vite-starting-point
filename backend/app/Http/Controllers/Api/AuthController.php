@@ -3,47 +3,50 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Models\User;
+use App\Http\Traits\HttpResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Password;
 
 class AuthController extends Controller
 {
+    use HttpResponse;
+
     /**
-     * Display a listing of the resource.
+     * Performs user login.
+     *
+     * @return LoginRequest
      */
-    public function index()
+    public function getAccessToken(LoginRequest $request)
     {
-        //
+        try {
+            $request->authenticate();
+
+            $user = User::where('email', $request->email)
+                ->first();
+
+            $request->user()->tokens()->delete();
+
+            return $this->success([
+                'user' => $user,
+                'access_token' => $user->createToken('')->plainTextToken
+            ]);
+        } catch (ValidationException $e) {
+            return $this->error([], $e->getMessage(), 406);
+        }
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Deletes access token.
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function deleteAccessToken(Request $request)
     {
-        //
-    }
+        $request->user()->tokens()->delete();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return $this->success([], [], '', 204);
     }
 }
