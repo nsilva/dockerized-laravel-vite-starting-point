@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\TodoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,4 @@ Route::post('/recover-password', [AuthController::class, 'recoverPassword'])->na
 // Create user
 Route::post('/users', [UserController::class, 'create'])->name('api.user.create');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:sanctum')->resource('todos', TodoController::class);
