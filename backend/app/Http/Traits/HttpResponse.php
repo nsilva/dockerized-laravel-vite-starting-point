@@ -14,7 +14,7 @@ trait HttpResponse
      * @param  integer $code
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function success(array $data, array $meta = [], string $message = '', int $code = 200): JsonResponse
+    protected function success(array $data = [], array $meta = [], string $message = '', int $code = 200): JsonResponse
     {
         return response()->json([
             'status' => 'SUCCESS',

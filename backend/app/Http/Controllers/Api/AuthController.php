@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Http\Traits\HttpResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Password;
 
 class AuthController extends Controller
 {
