@@ -8,7 +8,8 @@ const props = defineProps({
     },
     label: {
         type: String,
-        required: true,
+        required: false,
+        default: ''
     },
     type: {
         type: String,
@@ -29,7 +30,7 @@ const props = defineProps({
 
 <template>
   <div>
-    <label class="block uppercase text-gray-700 text-xs font-bold mb-2">{{ label }}</label>
+    <label v-if="label != ''" class="block uppercase text-gray-700 text-xs font-bold mb-2">{{ label }}</label>
     <input :type="type" 
         :value="modelValue" 
         @input="$emit('update:modelValue', $event.target.value)"

@@ -10,8 +10,8 @@ onMounted(async () => {
     todos.value = await fetchTodos();
 });
 
-const handleAddTodo = async (text) => {
-    const newTodo = await addTodo(text);
+const handleAddTodo = async (title) => {
+    const newTodo = await addTodo(title);
     todos.value.push(newTodo);
 };
 </script>
@@ -22,7 +22,7 @@ const handleAddTodo = async (text) => {
     <TodoCreator @todoCreated="handleAddTodo" />
     <ul>
       <li v-for="todo in todos" :key="todo.id">
-        <Todo :text="todo.text" />
+        <Todo :text="todo.title" />
       </li>
     </ul>
   </div>

@@ -9,22 +9,16 @@ use App\Http\Requests\CreateTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Actions\Todo\ListTodos;
 
 class TodoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, ListTodos $listAction)
     {
-        $user = Auth::user();
-
-        $todos = $user->todos()
-            ->whereNull('parent_id')
-            ->with('subtasks')
-            ->get();
-
-        return response()->json($todos);
+        return $listAction->listTodos();
     }
 
     /**
