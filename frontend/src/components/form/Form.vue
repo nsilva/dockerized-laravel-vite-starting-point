@@ -1,7 +1,6 @@
 <template>
   <form @submit.prevent="submitForm">
     <slot></slot>
-    <button type="submit">Submit</button>
   </form>
 </template>
 
@@ -21,6 +20,7 @@ const formData = ref(props.initialFormData);
 
 const submitForm = () => {
   // Emit the form data object
+  console.log({"data":formData.value})
   emit('formSubmitted', formData.value);
 };
 </script>
