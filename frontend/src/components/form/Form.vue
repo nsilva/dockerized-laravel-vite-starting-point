@@ -5,22 +5,21 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits } from 'vue';
+    import { ref, defineProps, defineEmits } from 'vue';
 
-const props = defineProps({
-  initialFormData: {
-    type: Object,
-    default: () => ({}),
-  },
-});
+    const props = defineProps({
+        initialFormData: {
+        type: Object,
+        default: () => ({}),
+        },
+    });
 
-const emit = defineEmits(['formSubmitted']);
+    const emit = defineEmits(['formSubmitted']);
 
-const formData = ref(props.initialFormData);
+    const formData = ref(props.initialFormData);
 
-const submitForm = () => {
-  // Emit the form data object
-  console.log({"data":formData.value})
-  emit('formSubmitted', formData.value);
-};
+    const submitForm = () => {
+        // Emit the form data object
+        emit('formSubmitted', formData.value);
+    };
 </script>
