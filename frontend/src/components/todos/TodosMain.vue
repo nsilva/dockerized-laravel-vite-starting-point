@@ -17,13 +17,20 @@ const handleAddTodo = async (title) => {
 </script>
 
 <template>
-  <div>
-    <h1>Todos</h1>
-    <TodoCreator @todoCreated="handleAddTodo" />
-    <ul>
-      <li v-for="todo in todos" :key="todo.id">
-        <Todo :text="todo.title" />
-      </li>
-    </ul>
-  </div>
+    <div>
+        <h1>Todos</h1>
+        <TodoCreator @todoCreated="handleAddTodo" />
+        <ul>
+            <li v-for="todo in todos" :key="todo.id">
+                <Todo :title="todo.title" />
+
+                <ul v-if="todo.subtasks.length > 0">
+                    <li v-for="subtask in todo.subtasks" :key="subtask.id">
+                        <Todo :title="subtask.title" :is-subtask="true"/>
+                    </li>
+                </ul>
+            </li>
+        
+        </ul>
+    </div>
 </template>
