@@ -20,10 +20,10 @@
         formData.value.disabled = true
         
         api
-            .post('/api/login', data)
+            .post('login', data)
             .then((response) => {
                 // Assuming the API response contains an access token
-                const accessToken = response.data.access_token;
+                const accessToken = response.data.data.access_token;
                 localStorage.setItem('accessToken', accessToken);
                 router.push('/todos');
             })
