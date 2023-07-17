@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import { router } from '@/router/index.js'
 import { validateToken } from '@/services/api.js'
-import '@/style.css'
+import '@/assets/styles.css'
 import App from '@/App.vue'
 
 router.beforeEach(async (to, from, next) => {
