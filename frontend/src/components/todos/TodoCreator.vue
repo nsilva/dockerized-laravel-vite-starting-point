@@ -2,12 +2,25 @@
 import { ref } from 'vue';
 import TextInput from '@/components/form/TextInput.vue';
 
+const props = defineProps({
+    parentId: {
+        type: Number,
+        required: false,
+        default: 0
+    }
+});
+
 const emit = defineEmits(['todoCreated']);
 const newTodoTitle = ref('');
 
 const createTodo = () => {
     if (newTodoTitle.value) {
-        emit('todoCreated', newTodoTitle.value);
+        const todo = {title: newTodoTitle.value};
+        if (props.parentId !== 0) {
+            todo.parent_id = props.parentId
+        }
+
+        emit('todoCreated', todo);
         newTodoTitle.value = '';
     }
 };

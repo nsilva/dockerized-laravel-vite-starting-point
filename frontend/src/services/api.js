@@ -44,9 +44,9 @@ export const fetchTodos = async () => {
     }
 };
 
-export const addTodo = async (title) => {
+export const addTodo = async (todo) => {
     try {
-        const response = await api.post('todos', { title }, {
+        const response = await api.post('todos', todo, {
             headers: getHeaders(),
         });
         return response.data.data.todo;
