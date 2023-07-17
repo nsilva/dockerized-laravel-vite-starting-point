@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Actions\Auth\GetAccessTokenAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use App\Models\User;
 use App\Http\Traits\HttpResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -18,23 +17,9 @@ class AuthController extends Controller
      *
      * @return LoginRequest
      */
-    public function getAccessToken(LoginRequest $request)
+    public function getAccessToken(LoginRequest $request, GetAccessTokenAction $tokenAction)
     {
-        try {
-            $request->authenticate();
-
-            $user = User::where('email', $request->email)
-                ->first();
-
-            $request->user()->tokens()->delete();
-
-            return $this->success([
-                'user' => $user,
-                'access_token' => $user->createToken('')->plainTextToken
-            ]);
-        } catch (ValidationException $e) {
-            return $this->error([], $e->getMessage(), 406);
-        }
+        return $tokenAction->getToken($request);
     }
 
     /**
