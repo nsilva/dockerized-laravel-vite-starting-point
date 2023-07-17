@@ -26,6 +26,10 @@ Route::post('/recover-password', [AuthController::class, 'recoverPassword'])->na
 Route::post('/users', [UserController::class, 'create'])->name('api.user.create');
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/validate-token', function (Request $request) {
+        return response()->json(['message' => 'Token is valid.']);
+    });
+
     Route::apiResource('todos', TodoController::class, ['as' => 'api']);
 });
 

@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateTodoRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Actions\Todo\ListTodos;
+use App\Http\Controllers\Actions\Todo\CreateTodo;
 
 class TodoController extends Controller
 {
@@ -24,26 +25,9 @@ class TodoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateTodoRequest $request)
+    public function store(CreateTodoRequest $request, CreateTodo $createAction)
     {
-        $user = Auth::user();
-
-        $parentTodoId = $request->input('parent_id', null);
-
-        if ($parentTodoId) {
-            $parentTodo = $user->todos()->find($parentTodoId);
-
-            if (!$parentTodo) {
-                return response()->json(['error' => 'Parent Todo not found'], 400);
-            }
-        }
-
-        $data = $request->validated();
-        $data['status'] = TodoStatusEnum::NOT_STARTED->value;
-        $data['user_id'] = $user->id;
-        $todo = new Todo($data);
-
-        $user->todos()->save($todo);
+        return $createAction->create($request);
 
         return response()->json($todo, 201);
     }

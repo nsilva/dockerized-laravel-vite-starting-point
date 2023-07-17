@@ -1,13 +1,24 @@
 import { createApp } from 'vue'
-import { router } from './router/index.js'
-import './style.css'
-import App from './App.vue'
+import { router } from '@/router/index.js'
+import { validateToken } from '@/services/api.js'
+import '@/style.css'
+import App from '@/App.vue'
 
-router.beforeEach((to, from, next) => {
-    if (to.meta.requiresAuth && !localStorage.getItem('accessToken')) {
-        next('/');
+router.beforeEach(async (to, from, next) => {
+    if (to.meta.requiresAuth) {
+        if (!localStorage.getItem('accessToken')) {
+            next('/');
+        } else {
+            const isValidToken = await validateToken()
+
+            if (isValidToken) {
+                next()
+            } else {
+                next('/')
+            }
+        }
     } else {
-        next();
+        next()
     }
 });
 
