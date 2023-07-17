@@ -1,8 +1,8 @@
 <template>
-    <div class="flex content-center items-center justify-center h-full">
-        <div class="w-full lg:w-4/12 px-4">
-            <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0">
-                <div class="flex-auto px-4 lg:px-10 py-10">
+    <div class="box-wrap">
+        <div class="box">
+            <div class="box-background">
+                <div class="form-fields-container">
 
                     <slot></slot>
 
@@ -12,3 +12,10 @@
         </div>
     </div>
 </template>
+
+<style scoped>
+    
+    .form-fields-container {
+        @apply flex-auto px-4 lg:px-10 py-10
+    }
+</style>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Actions\Todo\ShowTodo;
 use App\Http\Controllers\Controller;
 use App\Models\Todo;
 use App\Support\Enums\TodoStatusEnum;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Actions\Todo\ListTodos;
 use App\Http\Controllers\Actions\Todo\CreateTodo;
+use App\Http\Controllers\Actions\Todo\UpdateTodo;
 
 class TodoController extends Controller
 {
@@ -35,33 +37,17 @@ class TodoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Todo $todo, ShowTodo $showAction)
     {
-        $user = Auth::user();
-        $todo = $user->todos()->find($id);
-
-        if (!$todo) {
-            return response()->json(['error' => 'Todo not found'], 404);
-        }
-
-        return response()->json($todo);
+        return $showAction->show($todo);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTodoRequest $request, string $id)
+    public function update(UpdateTodoRequest $request, Todo $todo, UpdateTodo $updateAction)
     {
-        $user = Auth::user();
-        $todo = $user->todos()->find($id);
-
-        if (!$todo) {
-            return response()->json(['error' => 'Todo not found'], 404);
-        }
-
-        $todo->update($request->validated());
-
-        return response()->json($todo);
+        return $updateAction->update($request, $todo);
     }
 
     /**

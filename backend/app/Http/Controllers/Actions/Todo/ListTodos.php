@@ -15,6 +15,7 @@ class ListTodos extends BaseAction
         $todos = $user->todos()
             ->whereNull('parent_id')
             ->with('subtasks')
+            ->orderBy('created_at', 'desc')
             ->get()
             ->all();
 

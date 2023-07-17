@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CanHaveTodos;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateTodoRequest extends FormRequest
+class CreateTodoRequest extends BaseAPIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +24,12 @@ class CreateTodoRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'parent_id' => 'sometimes|integer|nullable',
+            'parent_id' => [
+                'sometimes',
+                'integer',
+                'nullable',
+                new CanHaveTodos()
+            ]
         ];
     }
 }

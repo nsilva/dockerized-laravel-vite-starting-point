@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Actions\User\CreateUser;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\HttpResponse;
 use App\Models\User;
@@ -11,25 +12,8 @@ class UserController extends Controller
 {
     use HttpResponse;
 
-    public function create(CreateUserRequest $request)
+    public function create(CreateUserRequest $request, CreateUser $createUser)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8|confirmed',
-        ]);
-
-        $user = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
-        ]);
-
-        $responseData = [
-            'message' => 'User created successfully.',
-            'user' => $user,
-        ];
-
-        return $this->success($responseData, [], '', 201);
+        return $createUser->create($request);
     }
 }
