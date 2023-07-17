@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { Icon } from '@iconify/vue';
 import TextInput from '@/components/form/TextInput.vue';
 
 const props = defineProps({
@@ -28,9 +29,9 @@ const createTodo = () => {
 </script>
 
 <template>
-    <div>
-        <TextInput v-model="newTodoTitle" placeholder="Enter a new todo" type="text" @keydown.enter="createTodo"/>
-        <button @click="createTodo">Submit</button>
+    <div class="pb-5">
+        <TextInput v-model="newTodoTitle" placeholder="Enter a new to-do..." type="text" @keydown.enter="createTodo" icon="mi:enter"/>
+        <small class="text-gray-500">Type and hit enter <Icon icon="mi:enter" class="inline align-sub"/></small>
     </div>
 </template>
 

@@ -34,12 +34,15 @@ const showSelected = (selectedId) => {
 
 <template>
     <div>
-        <h1>Todos</h1>
+        
         <TodoCreator @todoCreated="handleAddTodo" />
+        
         <ul>
             <li v-for="todo in todos" :key="todo.id">
                 <Todo :title="todo.title" />
-                <a @click.prevent="showSelected(todo.id)" href="#">Add subtask <Icon :icon="icon" /></a>
+                <a @click.prevent="showSelected(todo.id)" href="#">
+                    <small>Add subtask <Icon :icon="icon" class="inline align-sub"/></small>
+                </a>
                 
                 <div>
                     <div v-if="selectedTodo == todo.id">

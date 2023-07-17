@@ -43,6 +43,8 @@ const handleRegister = async (data) => {
       <main>
         <section>
           <div class="main-container">
+
+            <h1 class="text-center mt-11 text-7xl">To-Do!</h1>
             
             <FormContaner>
                 <div class="form-error">

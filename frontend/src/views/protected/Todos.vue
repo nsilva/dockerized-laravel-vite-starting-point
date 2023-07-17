@@ -4,15 +4,15 @@ import TodosMain from '@/components/todos/TodosMain.vue';
 
 <template>
     <div>
-        <main>
-            <section>
-                <div class="main-container">
+      <main>
+        <section>
+          <div class="main-container">
+            <h1>To-Do!</h1>
+            
+            <TodosMain></TodosMain>
 
-                <h1>Todos</h1>
-                <TodosMain></TodosMain>
-
-                </div>
-            </section>
-        </main>
+          </div>
+        </section>
+      </main>
     </div>
 </template>

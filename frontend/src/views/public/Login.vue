@@ -33,11 +33,13 @@ const handleLogin = async (data) => {
 };
 
 </script>
+
 <template>
     <div>
       <main>
         <section>
           <div class="main-container">
+            <h1 class="text-center mt-11 text-7xl">To-Do!</h1>
             <FormContaner>
                 <div class="form-error">
                     <p v-if="errorMessage" class="form-error-message">{{ errorMessage }}</p>
