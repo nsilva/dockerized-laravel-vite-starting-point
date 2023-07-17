@@ -15,6 +15,17 @@ export const login = async (credentials) => {
         return error.response
     }
 }
+
+export const createAccount = async (data) => {
+    try {
+        return await api.post('users', data)
+    } catch (error) {
+        console.error('Error', error);
+        
+        return error.response
+    }
+}
+
 export const validateToken = async () => {
     try {
         const response = await api.get('validate-token', {

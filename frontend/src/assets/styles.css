@@ -1,3 +1,42 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+h2 {
+    @apply mb-10 text-2xl
+}
+a {
+    @apply text-blue-800
+}
+
+section {
+    @apply absolute w-full h-full
+}
+
+.main-container {
+    @apply container mx-auto px-4 h-full
+}
+
+.form-error {
+    @apply relative w-full mb-3
+}
+
+.form-error-message {
+    @apply text-red-700
+}
+
+.text-input-container {
+    @apply relative w-full mb-3
+}
+
+.button-container {
+    @apply text-center mt-6
+}
+
+.form-button {
+    @apply bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full
+}
+
+.form-footer {
+    @apply flex flex-wrap mt-6
+}

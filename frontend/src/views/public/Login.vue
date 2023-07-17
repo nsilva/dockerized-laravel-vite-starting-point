@@ -52,7 +52,7 @@ const handleLogin = async (data) => {
                     </div>
                     <div class="button-container">
                         <button
-                            class="login-button"
+                            class="form-button"
                             type="submit"
                             :disabled="formData.disabled">
                             Sign In
@@ -62,7 +62,7 @@ const handleLogin = async (data) => {
 
                 <div class="form-footer">
                     <div class="w-1/2">
-                        <RouterLink to="/register"><small>Create account</small></RouterLink>
+                        <RouterLink to="/register">Create account</RouterLink>
                     </div>
                     
                 </div>
@@ -75,35 +75,5 @@ const handleLogin = async (data) => {
 </template>
  
 <style scoped>
-    section {
-        @apply absolute w-full h-full
-    }
-
-    .main-container {
-        @apply container mx-auto px-4 h-full
-    }
-
-    .form-error {
-        @apply relative w-full mb-3
-    }
-
-    .form-error-message {
-        @apply text-red-700
-    }
-
-    .text-input-container {
-        @apply relative w-full mb-3
-    }
-
-    .button-container {
-        @apply text-center mt-6
-    }
-
-    .login-button {
-        @apply bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full
-    }
     
-    .form-footer {
-        @apply flex flex-wrap mt-6
-    }
 </style>
