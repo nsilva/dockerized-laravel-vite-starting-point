@@ -42,6 +42,12 @@ class TodoControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJson($todo->toArray());
+
+        // Cannot get todos from another user
+        $anotherUser = User::factory()->create();
+        $response = $this->actingAs($anotherUser)->get(route('api.todos.show', $todo->id));
+
+        $response->assertStatus(404);
     }
 
     public function test_can_create_todo()

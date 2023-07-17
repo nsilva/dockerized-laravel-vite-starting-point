@@ -20,7 +20,7 @@ class CanHaveTodos implements ValidationRule
 
         $todo = Todo::find((int)$value);
 
-        if (!$todo || $todo->user_id !== $user->id || $todo->parent_id != null) {
+        if (!$todo || !$user->can('update', $todo) || $todo->parent_id != null) {
             $fail("Can't add subtask to this to-do");
         }
     }

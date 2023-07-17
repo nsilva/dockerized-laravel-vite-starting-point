@@ -15,7 +15,7 @@ class UpdateTodo extends BaseAction
     {
         $user = Auth::user();
 
-        if ($user->id !== $todo->user_id) {
+        if (!$user->can('update', $todo)) {
             return $this->error([], "Can't update this to-do", 404);
         }
 
