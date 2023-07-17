@@ -6,26 +6,50 @@ const api = axios.create({
     baseURL: API_URL,
 });
 
+export const login = async (credentials) => {
+    try {
+        return await api.post('login', credentials)
+    } catch (error) {
+        console.error('Error', error);
+        
+        return error.response
+    }
+}
+export const validateToken = async () => {
+    try {
+        const response = await api.get('validate-token', {
+            headers: getHeaders(),
+        });
+
+        if (response.status === 200) {
+            return true; 
+        } else {
+            return false; 
+        }
+    } catch (error) {
+        console.error('Error validating token:', error);
+        return false; 
+    }
+};
+
 export const fetchTodos = async () => {
     try {
         const response = await api.get('todos', {
             headers: getHeaders(),
         });
-        return response.data;
+        
+        return response.data.data;
     } catch (error) {
-        console.error('Error fetching todos:', error);
         return [];
     }
 };
 
-export const addTodo = async (text) => {
-    const accessToken = localStorage.setItem('accessToken', accessToken);
-
+export const addTodo = async (title) => {
     try {
-        const response = await api.post('todos', { text }, {
-            headers: getHeaders,
+        const response = await api.post('todos', { title }, {
+            headers: getHeaders(),
         });
-        return response.data;
+        return response.data.data.todo;
     } catch (error) {
         console.error('Error adding todo:', error);
         return null;

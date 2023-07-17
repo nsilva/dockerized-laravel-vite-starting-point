@@ -2,21 +2,21 @@
 import { ref } from 'vue';
 import TextInput from '@/components/form/TextInput.vue';
 
-const newTodoText = ref('');
+const emit = defineEmits(['todoCreated']);
+const newTodoTitle = ref('');
 
 const createTodo = () => {
-    if (newTodoText.value) {
-        emit('todoCreated', newTodoText.value);
-        newTodoText.value = '';
+    if (newTodoTitle.value) {
+        emit('todoCreated', newTodoTitle.value);
+        newTodoTitle.value = '';
     }
 };
 
-const emit = defineEmits(['todoCreated']);
 </script>
 
 <template>
     <div>
-        <TextInput v-model="newTodoText" placeholder="Enter a new todo" />
+        <TextInput v-model="newTodoTitle" placeholder="Enter a new todo" type="text" @keydown.enter="createTodo"/>
         <button @click="createTodo">Submit</button>
     </div>
 </template>

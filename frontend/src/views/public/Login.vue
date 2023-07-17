@@ -1,38 +1,37 @@
 <script setup>
-    import { ref } from 'vue';
-    import { useRouter, RouterLink } from 'vue-router';
-    import api from '@/services/api.js';
-    import FormContaner from '@/components/form/FormContainer.vue';
-    import Form from '@/components/form/Form.vue';
-    import TextInput from '@/components/form/TextInput.vue';
-    
-    const router = useRouter()
-    const formData = ref({
-        email:    'nahuns@gmail.com',
-        password: '12345678',
-        disabled: false
-    });
-    
-    const errorMessage = ref('')
+import { ref } from 'vue';
+import { useRouter, RouterLink } from 'vue-router';
+import { login } from '@/services/api.js';
+import FormContaner from '@/components/form/FormContainer.vue';
+import Form from '@/components/form/Form.vue';
+import TextInput from '@/components/form/TextInput.vue';
 
-    const handleFormSubmission = (data) => {
-        errorMessage.value = ''
-        formData.value.disabled = true
-        
-        api
-            .post('login', data)
-            .then((response) => {
-                // Assuming the API response contains an access token
-                const accessToken = response.data.data.access_token;
-                localStorage.setItem('accessToken', accessToken);
-                router.push('/todos');
-            })
-            .catch((error) => {
-                console.log(error)
-                errorMessage.value = error.response.data.message;
-                formData.value.disabled = false
-            });
-    };
+const router = useRouter()
+const formData = ref({
+    email:    'nahuns@gmail.com',
+    password: '12345678',
+    disabled: false
+});
+
+const errorMessage = ref('')
+
+const handleLogin = async (data) => {
+    errorMessage.value = ''
+    formData.value.disabled = true
+
+    const response = await login(data);
+    
+    if (response.status == 200) {
+        console.log("sucecsss")
+        const accessToken = response.data.data.access_token;
+        localStorage.setItem('accessToken', accessToken);
+        router.push('/todos');
+    } else {
+        errorMessage.value = response.data.message;
+        formData.value.disabled = false
+    }
+};
+
 </script>
 <template>
     <div>
@@ -44,7 +43,7 @@
                     <p v-if="errorMessage" class="text-red-700">{{ errorMessage }}</p>
                 </div>
 
-                <Form :initialFormData="formData" @formSubmitted="handleFormSubmission">
+                <Form :initialFormData="formData" @formSubmitted="handleLogin">
                     <div class="relative w-full mb-3">
                         <TextInput v-model="formData.email" label="Email" type="text" :disabled="formData.disabled"/>
                     </div>

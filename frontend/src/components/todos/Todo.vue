@@ -1,13 +1,19 @@
 <script setup>
+
 const props = defineProps({
-    text: {
+    title: {
         type: String,
         required: true,
     },
+    isSubtask: {
+        type: Boolean,
+        required: false,
+        default: false
+    }
 });
 </script>
 
 <template>
-    <div>{{ text }}</div>
+    <div :class="{ 'ml-2' : isSubtask}">{{ title }}</div>
 </template>
   
