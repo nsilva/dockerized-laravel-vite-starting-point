@@ -30,14 +30,24 @@ const props = defineProps({
 
 <template>
   <div>
-    <label v-if="label != ''" class="block uppercase text-gray-700 text-xs font-bold mb-2">{{ label }}</label>
+    <label v-if="label != ''" class="text-input-label">{{ label }}</label>
     <input :type="type" 
         :value="modelValue" 
         @input="$emit('update:modelValue', $event.target.value)"
-        class="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 rounded text-sm shadow focus:outline-none focus:ring w-full"
+        class="text-input"
         :disabled="disabled"
         :class="{ 'bg-gray-200	' : disabled}">
     <small v-if="error !== ''" class="text-red-700">{{ error[0] }}</small>
   </div>
 </template>
+
+<style scoped>
+    .text-input-label {
+        @apply block uppercase text-gray-700 text-xs font-bold mb-2
+    }
+
+    .text-input {
+        @apply border-0 px-3 py-3 placeholder-gray-400 text-gray-700 rounded text-sm shadow focus:outline-none focus:ring w-full
+    }
+</style>
 
