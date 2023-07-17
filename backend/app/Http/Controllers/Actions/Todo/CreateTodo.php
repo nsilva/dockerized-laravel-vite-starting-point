@@ -15,16 +15,6 @@ class CreateTodo extends BaseAction
     {
         $user = Auth::user();
 
-        $parentTodoId = $request->input('parent_id', null);
-
-        if ($parentTodoId) {
-            $parentTodo = $user->todos()->find($parentTodoId);
-
-            if (!$parentTodo) {
-                return response()->json(['error' => 'Parent Todo not found'], 400);
-            }
-        }
-
         $data = $request->validated();
         $data['status'] = TodoStatusEnum::NOT_STARTED->value;
         $data['user_id'] = $user->id;

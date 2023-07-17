@@ -5,26 +5,32 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Todo;
 use App\Support\Enums\TodoStatusEnum;
+use Illuminate\Testing\Fluent\AssertableJson;
 
 class TodoControllerTest extends TestCase
 {
     public function test_can_get_all_todos()
     {
         $user = User::factory()->create();
-        Todo::factory()->count(3)->create(['user_id' => $user->id]);
+        $todos = Todo::factory()->count(3)->create(['user_id' => $user->id]);
 
         $response = $this->actingAs($user)->get(route('api.todos.index'));
 
         $response->assertStatus(200);
-        $response->assertJsonCount(3);
+
+        $responseData = $response->decodeResponseJson();
+        $this->assertArrayHasKey('data', $responseData);
+        $this->assertCount(3, $responseData['data']);
 
         // Test returns list of parent only and subtasks are included as children
-        $parent = Todo::factory()->create(['user_id' => $user->id]);
-        Todo::factory()->create(['user_id' => $user->id, 'parent_id' => $parent->id]);
+        Todo::factory()->create(['user_id' => $user->id, 'parent_id' => $todos[0]->id]);
 
         $response = $this->actingAs($user)->get(route('api.todos.index'));
         $response->assertStatus(200);
-        $response->assertJsonCount(4);
+
+        $responseData = $response->decodeResponseJson();
+        $this->assertArrayHasKey('data', $responseData);
+        $this->assertCount(3, $responseData['data']);
     }
 
     public function test_can_get_todo_by_id()
@@ -52,6 +58,23 @@ class TodoControllerTest extends TestCase
         $this->assertDatabaseHas('todos', $data + ['user_id' => $user->id]);
     }
 
+    public function test_cannot_add_subtask_to_subtask()
+    {
+        $user = User::factory()->create();
+        $todo = Todo::factory()->create(['user_id' => $user->id]);
+        $subtask = Todo::factory()->create(['user_id' => $user->id, 'parent_id' => $todo->id]);
+
+        $data = [
+            'title' => 'Sample Todo under subtask',
+            'parent_id' => $subtask->id
+        ];
+
+        // Attempt to create under subtask
+        $response = $this->actingAs($user)->post(route('api.todos.store'), $data);
+        $response->assertStatus(422);
+        $this->assertDatabaseMissing('todos', $data + ['user_id' => $user->id]);
+    }
+
     public function test_can_create_todo_with_parent()
     {
         $user = User::factory()->create();
@@ -65,13 +88,14 @@ class TodoControllerTest extends TestCase
 
         // Parent does *not* exist
         $response = $this->actingAs($anotherUser)->post(route('api.todos.store'), $data);
-        $response->assertStatus(400);
+        $response->assertStatus(422);
         $this->assertDatabaseMissing('todos', $data + ['user_id' => $user->id]);
 
         $data['parent_id'] = $todo->id;
+
         // Parent todo does *not* belong to the user
         $response = $this->actingAs($anotherUser)->post(route('api.todos.store'), $data);
-        $response->assertStatus(400);
+        $response->assertStatus(422);
         $this->assertDatabaseMissing('todos', $data + ['user_id' => $user->id]);
 
         // Parent todo belongs to the user

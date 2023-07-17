@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Actions\Todo\ListTodos;
 use App\Http\Controllers\Actions\Todo\CreateTodo;
+use App\Http\Controllers\Actions\Todo\UpdateTodo;
 
 class TodoController extends Controller
 {
@@ -50,18 +51,9 @@ class TodoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTodoRequest $request, string $id)
+    public function update(UpdateTodoRequest $request, Todo $todo, UpdateTodo $updateAction)
     {
-        $user = Auth::user();
-        $todo = $user->todos()->find($id);
-
-        if (!$todo) {
-            return response()->json(['error' => 'Todo not found'], 404);
-        }
-
-        $todo->update($request->validated());
-
-        return response()->json($todo);
+        return $updateAction->update($request, $todo);
     }
 
     /**
