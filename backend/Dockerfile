@@ -13,7 +13,9 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
     unzip \
-    libhiredis-dev
+    libhiredis-dev \
+    cron \
+    vim
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath
@@ -34,6 +36,7 @@ RUN a2enmod rewrite
 # Copy the entire project to the working directory
 COPY ./storage ./storage
 COPY ./bootstrap/cache ./bootstrap/cache
+COPY ./crontab/cron /etc/cron.d/container_cronjob
 
 # Set permissions for Laravel directories
 RUN chown -R www-data:www-data \

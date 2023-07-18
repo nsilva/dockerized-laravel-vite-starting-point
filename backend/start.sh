@@ -15,20 +15,25 @@ queue_command="php artisan queue:work --tries=3"
 # Check the command-line arguments
 if [[ "$1" == "--serve" ]]; then
     echo "Running migrations..."
+
     php artisan migrate
+
     echo "Executing: $serve_command"
-    $serve_command
+    $serve_command \
+        && echo "... and we are ready!!! Visit the ToDoist application on http://localhost:8001"
 elif [[ "$1" == "--queue" ]]; then
     echo "Executing: $queue_command"
+
     $queue_command
 elif [[ "$1" == "--schedule" ]]; then
     echo "Setting up Laravel Scheduler..."
 
-    # Write the cron job entry to the crontab
-    echo "* * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1" | crontab -
+    chmod 0644 /etc/cron.d/container_cronjob \
+        && touch /var/log/cron.log \
+        && crontab /etc/cron.d/container_cronjob \
+        && cron -f \
+        && tail -f /var/log/cron.log
 
-    # Start the cron service
-    cron -f
 else
     echo "Invalid option. Usage: ./script.sh [--serve | --queue]"
 fi

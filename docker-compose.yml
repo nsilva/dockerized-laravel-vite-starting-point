@@ -79,7 +79,7 @@ services:
     container_name: mailer
     ports:
       - "1025:1025"
-      - "8025:8025"
+      - "8004:8025"
 
 volumes:
   db_data:
