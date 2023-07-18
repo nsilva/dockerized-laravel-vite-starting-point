@@ -15,6 +15,6 @@ class ShowTodo extends BaseAction
             return response()->json(['error' => 'Todo not found'], 404);
         }
 
-        return response()->json($todo);
+        return $this->success(['todo' => $todo->loadMissing('subtasks')]);
     }
 }

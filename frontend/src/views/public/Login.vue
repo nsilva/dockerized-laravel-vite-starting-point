@@ -39,7 +39,7 @@ const handleLogin = async (data) => {
       <main>
         <section>
           <div class="main-container">
-            <h1 class="text-center mt-11 text-7xl">To-Do!</h1>
+            <h1 class="text-center mt-11 text-7xl">ToDoist</h1>
             <FormContaner>
                 <div class="form-error">
                     <p v-if="errorMessage" class="form-error-message">{{ errorMessage }}</p>
