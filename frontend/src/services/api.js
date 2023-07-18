@@ -67,6 +67,18 @@ export const addTodo = async (todo) => {
     }
 };
 
+export const updateTodo = async (id, status) => {
+    try {
+        const response = await api.put(`todos/${id}`, {status}, {
+            headers: getHeaders(),
+        });
+        return response.data.data.todo;
+    } catch (error) {
+        console.error('Error adding todo:', error);
+        return null;
+    }
+};
+
 const getHeaders = () => { 
     return  {
         'Authorization': `Bearer ${getAccessToken()}`

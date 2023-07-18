@@ -1,9 +1,3 @@
-<template>
-  <form @submit.prevent="submitForm">
-    <slot></slot>
-  </form>
-</template>
-
 <script setup>
     import { ref, defineProps, defineEmits } from 'vue';
 
@@ -23,3 +17,9 @@
         emit('formSubmitted', formData.value);
     };
 </script>
+
+<template>
+  <form @submit.prevent="submitForm">
+    <slot></slot>
+  </form>
+</template>
