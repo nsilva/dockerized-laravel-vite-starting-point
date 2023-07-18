@@ -15,7 +15,6 @@ onMounted(async () => {
 });
 
 const handleAddTodo = async (todo) => {
-    console.log(todo)
     const newTodo = await addTodo(todo);
     if (!todo.parent_id) {
         todos.value.unshift(newTodo);
