@@ -16,11 +16,14 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('status')->default(TodoStatusEnum::NOT_STARTED->value);
+
             $table->unsignedBigInteger('user_id')->nullable(false);
-            $table->foreign('user_id')->references('id')->on('todos')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->unsignedBigInteger('parent_id')->nullable(true);
             $table->foreign('parent_id')->references('id')->on('todos')->onDelete('cascade');
-            $table->date('in_progress_since')->nullable();
+
+            $table->dateTime('in_progress_since')->nullable();
             $table->timestamps();
         });
     }

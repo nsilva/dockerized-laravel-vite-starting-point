@@ -2,8 +2,8 @@
 
 set -Eeuo pipefail
 
-composer install --optimize-autoloader --no-dev \
-    && composer dump-autoload \
+composer dump-autoload \
+    && composer install --optimize-autoloader --no-dev \
     && php artisan cache:clear \
     && php artisan config:clear \
     && php artisan view:clear
@@ -21,6 +21,14 @@ if [[ "$1" == "--serve" ]]; then
 elif [[ "$1" == "--queue" ]]; then
     echo "Executing: $queue_command"
     $queue_command
+elif [[ "$1" == "--schedule" ]]; then
+    echo "Setting up Laravel Scheduler..."
+
+    # Write the cron job entry to the crontab
+    echo "* * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1" | crontab -
+
+    # Start the cron service
+    cron -f
 else
     echo "Invalid option. Usage: ./script.sh [--serve | --queue]"
 fi

@@ -7,7 +7,7 @@ import TodosMain from '@/components/todos/TodosMain.vue';
       <main>
         <section>
           <div class="main-container">
-            <h1>To-Do!</h1>
+            <h1>ToDoist</h1>
             
             <TodosMain></TodosMain>
 

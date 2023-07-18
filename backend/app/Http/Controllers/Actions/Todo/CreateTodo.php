@@ -22,6 +22,6 @@ class CreateTodo extends BaseAction
 
         $user->todos()->save($todo);
 
-        return $this->success(['todo' => $todo], [], '', 201);
+        return $this->success(['todo' => $todo->loadMissing('subtasks')], [], '', 201);
     }
 }

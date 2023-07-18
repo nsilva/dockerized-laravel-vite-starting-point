@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { Icon } from '@iconify/vue';
 import Todo from '@/components/todos/Todo.vue';
@@ -19,8 +19,13 @@ const handleAddTodo = async (todo) => {
     if (!todo.parent_id) {
         todos.value.unshift(newTodo);
     } else {
-        const parentTodo = todos.value.find(item => item.id == newTodo.parent_id)
-        parentTodo.subtasks.unshift(newTodo)
+        let parentIdIndex = null
+
+        const parentTodo = todos.value.find((item, index) => item.id == newTodo.parent_id)
+
+        if (parentTodo) {
+            parentTodo.subtasks.unshift(newTodo)
+        }
     }
 };
 
