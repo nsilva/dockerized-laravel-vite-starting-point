@@ -29,7 +29,7 @@ const createTodo = () => {
 </script>
 
 <template>
-    <div class="pb-5">
+    <div class="pb-3">
         <TextInput v-model="newTodoTitle" placeholder="Enter a new to-do..." type="text" @keydown.enter="createTodo" icon="mi:enter"/>
         <small class="text-gray-500">Type and hit enter <Icon icon="mi:enter" class="inline align-sub"/></small>
     </div>

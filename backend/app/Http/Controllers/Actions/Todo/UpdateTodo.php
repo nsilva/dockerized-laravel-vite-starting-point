@@ -21,6 +21,6 @@ class UpdateTodo extends BaseAction
 
         $todo->update($request->validated());
 
-        return $this->success(['todo' => $todo]);
+        return $this->success(['todo' => $todo->loadMissing('subtasks')]);
     }
 }

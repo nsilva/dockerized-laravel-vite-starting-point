@@ -4,18 +4,18 @@ import { useRouter } from 'vue-router';
 import { Icon } from '@iconify/vue';
 import Todo from '@/components/todos/Todo.vue';
 import TodoCreator from '@/components/todos/TodoCreator.vue';
-import { fetchTodos, addTodo } from '@/services/api.js';
+import { fetchTodos, addTodo, updateTodo } from '@/services/api.js';
 
 const router = useRouter()
 const todos = ref([]);
 const selectedTodo = ref(0);
-const icon = ref('la:angle-right')
 
 onMounted(async () => {
     todos.value = await fetchTodos();
 });
 
 const handleAddTodo = async (todo) => {
+    console.log(todo)
     const newTodo = await addTodo(todo);
     if (!todo.parent_id) {
         todos.value.unshift(newTodo);
@@ -25,10 +25,35 @@ const handleAddTodo = async (todo) => {
     }
 };
 
-const showSelected = (selectedId) => {
-    icon.value = (icon.value == 'la:angle-right') ? 'la:angle-down' : 'la:angle-right'
-    selectedTodo.value = selectedId != selectedTodo.value ? selectedId : 0
-}
+const handleUpdateTodo = async (data) => {
+    const updatedTodo = await updateTodo(data.id, data.status)
+    
+    if (!updatedTodo.parent_id) {
+        let affectedIndex = null
+        todos.value.find((item, index) => {
+            if (item.id == updatedTodo.id) {
+                affectedIndex = index    
+                return true;
+            }
+        })
+
+        // Fully replace todo in case subtasks are affected
+        if (affectedIndex !== null) {
+            todos.value[affectedIndex] = updatedTodo
+        }
+    } else {
+        let affectedTodo = null
+
+        todos.value.some((todo) => {
+            affectedTodo = todo.subtasks.find((subtask) => subtask.id === updatedTodo.id)
+            return affectedTodo
+        });
+        
+        if (affectedTodo !== null) {
+            affectedTodo.status = updatedTodo.status
+        }
+    }
+};
 
 </script>
 
@@ -39,21 +64,7 @@ const showSelected = (selectedId) => {
         
         <ul>
             <li v-for="todo in todos" :key="todo.id">
-                <Todo :title="todo.title" />
-                <a @click.prevent="showSelected(todo.id)" href="#">
-                    <small>Add subtask <Icon :icon="icon" class="inline align-sub"/></small>
-                </a>
-                
-                <div>
-                    <div v-if="selectedTodo == todo.id">
-                        <TodoCreator @todoCreated="handleAddTodo" :parent-id="todo.id"/>
-                    </div>
-                    <ul v-if="todo.subtasks?.length > 0">
-                        <li v-for="subtask in todo.subtasks" :key="subtask.id">
-                            <Todo :title="subtask.title" :is-subtask="true"/>
-                        </li>
-                    </ul>
-                </div>
+                <Todo :todo="todo" @todoCreated="handleAddTodo" @todoUpdated="handleUpdateTodo"/>
             </li>
         
         </ul>
