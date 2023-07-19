@@ -8,8 +8,8 @@ import TextInput from '@/components/form/TextInput.vue';
 
 const router = useRouter()
 const formData = ref({
-    email:    'nahuns@gmail.com',
-    password: '12345678',
+    email:    '',
+    password: '',
     disabled: false
 });
 

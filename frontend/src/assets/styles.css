@@ -25,7 +25,7 @@ section {
 }
 
 .box-wrap {
-    @apply flex content-center items-center justify-center h-full
+    @apply flex content-center items-start justify-center h-full
 }
 
 .box {
