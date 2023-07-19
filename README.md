@@ -16,6 +16,7 @@ This is more than just the typical to-do app. This app demostrate the use of sev
     
 - Vue Frontend
   - Components Reusability
+  - Routing
   - Testing
   - Emmiters
  
@@ -46,11 +47,26 @@ The Laravel backend leverages several features from the framework
   - If a parent task is not in progress and a child task is set to in progress, the parent task should be set to in progress as well
   - If a parent task is set as complete, all the subtasks should be set as complete
  To cover theses cases, a model observer was used to observe the `updated` event
-docker pull php:8.1-apache && docker-compose up --build
+- Policies: A policy has been used to determine if a user can view or edit a task
+- Sanctum: The authentication is done using Sanctum to issue access token and as middleware to validate the token in each request
+- Scheduler/Command: A command is in charge of fetching the uses with pending taks for more than 24 hours, along with the number of pendings tasks. The command is scheduled to execute every 5 minutes for testing purposes.
+- Relationships: Givem that tasks and subtasks have the same properties, the `Todo` model was set to have a relationship with itself, so that if the `parent_id` is null, it is a parent task, otherwise it is a subtask.
+- Enums: To handle the different possible statuses for a task, the newly introduced PHP `enum` structure has been used to have more flexibility if a new status is introduced.
 
-UI localhost:8001
-BE localhost:8002
-DBAdmin localhost:8003
-Inbox localhost:8025
+Additionally, basic testing coverage was created to test the API request responses.
+
+## Frontend (Vue)
+The frontend application handles the user login, account creation and to-dos creation/update. The implementation uses some basics concepts of the framework:
+- Component reusability: It is clearly seen in the To-Dos screen, where `Todo` component renders copies of itself if the task has subtasks.
+- Routing: To render the different screens, the Vue router is used for redirection
+- Testing: Basic tests were created using Vitest. Tbis is just a demostration on testing and far from being a proper test coverage.
+- Emitters: Severals emitters are used across the applicationn to handle the diferent event caused by adding/updating tasks.
+
+## Relevant URLs
+
+UI: localhost:8001
+API: localhost:8002
+DBAdmin: localhost:8003
+Mail Inbox: localhost:8004
 
 
