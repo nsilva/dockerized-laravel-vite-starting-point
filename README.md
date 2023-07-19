@@ -3,7 +3,7 @@ To-Do Application
 This is more than just the typical to-do app. This app demostrate the use of several concepts
 - Doker and Docker Compose
 - Laravel/PHP Backend
-- - Queues(Redis)
+  - Queues(Redis)
   - Notifications
   - Observers
   - Policies
@@ -12,7 +12,7 @@ This is more than just the typical to-do app. This app demostrate the use of sev
   - Relationships
   - Enums
 - Vue Frontend
-- - Components Reusability
+  - Components Reusability
   - Testing
   - Emmiters
  
