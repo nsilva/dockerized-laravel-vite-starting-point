@@ -37,12 +37,17 @@ Once the new to-do is created, it will be shown in the list below the main input
 ![image](https://github.com/nsilva/dockerized-todo/assets/1390818/831facb1-72df-4123-bbb3-5d9afc7b82e9)
 
 The to-do box includes a "Add subtask" link, when clicked, it will display a new input to add subtask under the selected to-do. The subtasks will be displayed in the same box as the parent to-do
+
 ![image](https://github.com/nsilva/dockerized-todo/assets/1390818/fb31130c-d334-4ae2-92c7-a61016cfa202)
 
 To the right of each entry, you can see two icons, the first indicates the status if the to-do, and the cog displays the changing status options when clicked.
+
 ![image](https://github.com/nsilva/dockerized-todo/assets/1390818/82f9591e-f15d-4015-9794-59dc85462272)
 
-
+Please note the side effects of changing status:
+- If a parent task is set as complete, all the subtasks should be set as complete
+- If a subtask is set as in progress and the parent to-do is not in progress, it will be forced to be in progress
+  
 ## How to Run this project
 To run the project run `up.sh`, this will start the Docker container. The UI will be availeble at `localhost:8001`, addtionally, the MySQL database can be accessed at `localhost:8001` and the email inbox, where the system emails will land will be located at `localhost:8004`.
 
