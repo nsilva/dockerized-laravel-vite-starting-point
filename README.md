@@ -62,11 +62,24 @@ The frontend application handles the user login, account creation and to-dos cre
 - Testing: Basic tests were created using Vitest. Tbis is just a demostration on testing and far from being a proper test coverage.
 - Emitters: Severals emitters are used across the applicationn to handle the diferent event caused by adding/updating tasks.
 
+## Other considerations
+For the styling, I used Tailwind. I also wrote 
+
 ## Relevant URLs
 
 UI: localhost:8001
 API: localhost:8002
 DBAdmin: localhost:8003
 Mail Inbox: localhost:8004
+
+## Possible Improvements
+There are several opportunities to imporve this application, but for the pusposes it was created, I believe it covers pretty much everything. At the time fo writing, there quite a few improvement I can thing of:
+- Improve testing coverage
+- Filter tasks by status
+- Remove tasks marked as completed from the main list
+- Add an email confirmation message upon registration
+## Challenges
+
+## Final thoughts
 
 
