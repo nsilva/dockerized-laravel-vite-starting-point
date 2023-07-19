@@ -97,7 +97,7 @@ const handleSubtaskUpdate = (data) => {
 
         </div>
 
-        <a @click.prevent="toggleSubTaskInput()" href="#" v-if="todo?.parent_id == null" class="px-4">
+        <a @click.prevent="toggleSubTaskInput()" href="#" v-if="todo?.parent_id == null" class="add-subtask px-4">
             <small>Add subtask <Icon :icon="icon" class="inline align-sub"/></small>
         </a>
         
