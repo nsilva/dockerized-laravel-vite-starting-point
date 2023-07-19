@@ -28,6 +28,10 @@ This is more than just the typical to-do app. This app demostrate the use of sev
 ## How to Run this project
 To run the project run `up.sh`, this will start the Docker container. The UI will be availeble at `localhost:8001`, addtionally, the MySQL database can be accessed at `localhost:8001` and the email inbox, where the system emails will land will be located at `localhost:8004`.
 
+For convenience, the application includes a seeder that creates a user with some to-dos. You can access with the following credentials:
+Email: test@example.com
+Password: password123
+
 ## Infrastructure(Docker)
 The project infrastrcuture is build upon Docker with Docker Compose. At the root folder you can find the `docker-compose.yml` file. The defined containers are as follows:
 - front-end: This container will hold the Vue frontend. The volumes will map the `frontend` folder.
@@ -63,14 +67,14 @@ The frontend application handles the user login, account creation and to-dos cre
 - Emitters: Severals emitters are used across the applicationn to handle the diferent event caused by adding/updating tasks.
 
 ## Other considerations
-For the styling, I used Tailwind. I also wrote 
+For the styling, I used Tailwind with nested styles. I also used Vite to create the Vue project
 
 ## Relevant URLs
 
-UI: localhost:8001
-API: localhost:8002
-DBAdmin: localhost:8003
-Mail Inbox: localhost:8004
+- UI: localhost:8001
+- API: localhost:8002
+- DBAdmin: localhost:8003
+- Mail Inbox: localhost:8004
 
 ## Possible Improvements
 There are several opportunities to imporve this application, but for the pusposes it was created, I believe it covers pretty much everything. At the time fo writing, there quite a few improvement I can thing of:
