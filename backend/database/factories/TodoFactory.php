@@ -19,7 +19,7 @@ class TodoFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->text(),
+            'title' => "Call Mike",
             'user_id' => 0
         ];
     }

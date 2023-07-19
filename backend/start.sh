@@ -18,6 +18,10 @@ if [[ "$1" == "--serve" ]]; then
 
     php artisan migrate
 
+    echo "Running seeder..."
+
+    php artisan db:seed
+
     echo "Executing: $serve_command"
     $serve_command \
         && echo "... and we are ready!!! Visit the ToDoist application on http://localhost:8001"
