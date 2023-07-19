@@ -83,6 +83,7 @@ There are several opportunities to imporve this application, but for the puspose
 - Remove tasks marked as completed from the main list
 - Add an email confirmation message upon registration
 - Although the API side is really small, it could include API documentation
+- The CSS styling could be more organized but I wanted to experiemnt with the different ways to use Tailwind
 
 
 
