@@ -38,7 +38,14 @@ The project infrastrcuture is build upon Docker with Docker Compose. At the root
 - phpmyadmin: This container facilitates the visual access to the database on `localhost:8003` with PHPMyAdmin.
 - mailpit: This container hold the Mailpit inbox where the system email will land.
 
-  
+## Backend (Laravel)
+The Laravel backend leverages several features from the framework
+- Queues: For the tasks that are in progress for more than 24 hours, it is necessary to notify the users about the pending tasks. Since email notifications can be a slow process, the emailing is processed in queue using Redis.
+- Notifications: The pending tasks email is send using the notifications system, where each use with pending tasks is notified vis email
+- Observers: It is assumed that updating a task can have side effects in two cases
+  - If a parent task is not in progress and a child task is set to in progress, the parent task should be set to in progress as well
+  - If a parent task is set as complete, all the subtasks should be set as complete
+ To cover theses cases, a model observer was used to observe the `updated` event
 docker pull php:8.1-apache && docker-compose up --build
 
 UI localhost:8001
