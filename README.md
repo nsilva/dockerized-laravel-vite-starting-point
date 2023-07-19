@@ -82,8 +82,6 @@ There are several opportunities to imporve this application, but for the puspose
 - Filter tasks by status
 - Remove tasks marked as completed from the main list
 - Add an email confirmation message upon registration
-## Challenges
 
-## Final thoughts
 
 
