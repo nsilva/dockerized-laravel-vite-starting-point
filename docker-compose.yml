@@ -19,13 +19,14 @@ services:
       dockerfile: Dockerfile
     command: ./start.sh --serve
     ports:
-      - 8002:8000
+      - 8002:80
     depends_on:
       - db
     volumes:
       - ./backend:/var/www/html
 
   redis:
+    container_name: redis
     image: redis:latest
 
   queue-worker:
@@ -38,7 +39,6 @@ services:
       - redis
     volumes:
       - ./backend:/var/www/html
-    command: ./start.sh --queue
 
   scheduler:
     container_name: scheduler
@@ -50,9 +50,9 @@ services:
       - redis
     volumes:
       - ./backend:/var/www/html
-    command: ./start.sh --schedule
 
   db:
+    container_name: database
     image: mysql:8.0
     env_file: './.env'
     environment:

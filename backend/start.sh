@@ -2,8 +2,7 @@
 
 set -Eeuo pipefail
 
-composer dump-autoload \
-    && composer install --optimize-autoloader --no-dev \
+composer install --optimize-autoloader --no-dev \
     && php artisan cache:clear \
     && php artisan config:clear \
     && php artisan view:clear
@@ -16,7 +15,7 @@ queue_command="php artisan queue:work --tries=3"
 if [[ "$1" == "--serve" ]]; then
     echo "Running migrations..."
 
-    php artisan migrate
+    php artisan migrate --force
 
     echo "Running seeder..."
 
