@@ -1,6 +1,6 @@
 version: '3.4'
 services:
-  frontend-vue:
+  frontend:
     container_name: frontend
     image: node:lts
     working_dir: /app
