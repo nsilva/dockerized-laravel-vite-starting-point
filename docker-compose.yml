@@ -17,7 +17,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: ./start.sh --serve
+    command: ./command.sh --serve
     ports:
       - 8002:80
     depends_on:
@@ -39,6 +39,7 @@ services:
       - redis
     volumes:
       - ./backend:/var/www/html
+    command: ./command.sh --queue
 
   scheduler:
     container_name: scheduler
@@ -50,6 +51,7 @@ services:
       - redis
     volumes:
       - ./backend:/var/www/html
+    command: ./command.sh --schedule
 
   db:
     container_name: database
