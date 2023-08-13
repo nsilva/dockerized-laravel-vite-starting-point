@@ -5,25 +5,21 @@ set -Eeuo pipefail
 composer install --optimize-autoloader --no-dev \
     && php artisan cache:clear \
     && php artisan config:clear \
-    && php artisan view:clear
 
 # Define the available options
-serve_command="php artisan serve --host=0.0.0.0"
+serve_command="/usr/sbin/apache2ctl -DFOREGROUND"
 queue_command="php artisan queue:work --tries=3"
 
 # Check the command-line arguments
 if [[ "$1" == "--serve" ]]; then
-    echo "Running migrations..."
+    echo "Running initial artisan commands..."
+    php artisan migrate --force \
+        && php artisan view:clear \
+        && php artisan db:seed \
+        && php artisan key:generate
 
-    php artisan migrate --force
-
-    echo "Running seeder..."
-
-    php artisan db:seed
-
-    echo "Executing: $serve_command"
     $serve_command \
-        && echo "... and we are ready!!! Visit the ToDoist application on http://localhost:8001"
+        && echo "... and we are ready!!! Visit the application at http://localhost:8001"
 elif [[ "$1" == "--queue" ]]; then
     echo "Executing: $queue_command"
 
