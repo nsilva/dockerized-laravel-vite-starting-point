@@ -2,8 +2,8 @@
 
 set -Eeuo pipefail
 
-composer install --optimize-autoloader --no-dev \
-    && php artisan cache:clear \
+#composer install --optimize-autoloader --no-dev \
+php artisan cache:clear \
     && php artisan config:clear \
 
 # Define the available options
