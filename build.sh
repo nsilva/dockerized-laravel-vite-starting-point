@@ -26,4 +26,30 @@ else
   echo ".env file not found in the current directory."
 fi
 
+# Update the Laravel .env file with the DB connection details
+# Path to the .env file
+ENV_FILE="./backend/.env"
+
+# Read the current values from the .env file
+DB_HOST=$(grep "^DB_HOST=" "$ENV_FILE" | cut -d '=' -f2)
+DB_DATABASE=$(grep "^DB_DATABASE=" "$ENV_FILE" | cut -d '=' -f2)
+DB_USERNAME=$(grep "^DB_USERNAME=" "$ENV_FILE" | cut -d '=' -f2)
+DB_PASSWORD=$(grep "^DB_PASSWORD=" "$ENV_FILE" | cut -d '=' -f2)
+
+# Update the values
+DB_HOST="db"
+DB_DATABASE=$db_name
+DB_USERNAME=$db_user
+DB_PASSWORD=$db_password
+
+# Write the updated values back to the .env file
+sed -i "" "s#^DB_HOST=.*#DB_HOST=${DB_HOST}#" "$ENV_FILE"
+sed -i "" "s#^DB_DATABASE=.*#DB_DATABASE=${DB_DATABASE}#" "$ENV_FILE"
+sed -i "" "s#^DB_USERNAME=.*#DB_USERNAME=${DB_USERNAME}#" "$ENV_FILE"
+sed -i "" "s#^DB_PASSWORD=.*#DB_PASSWORD=${DB_PASSWORD}#" "$ENV_FILE"
+
+
+echo "Updated Laravel database connection details in Laravel .env file"
+
+# Run the Vite app creator
 npm create vite@latest frontend
